@@ -37,49 +37,112 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.providers
+Type: `Object`
+Default value: `Undefined`
+
+An object containing mutliple providers. grunt-credentials uses providers to retrieve requested credential. A provider object typically looks like this:
+
+```js
+providers:{
+  "my-provider":{
+    credentials:{"usr":"joeBlogs"}, //An object that contains your credentials
+    map:{ "github-username":"usr" } //An object that maps the provider's credential key to a standard key that you can specify. In this example, "github-username"
+  }
+}
+```
+
+#### options.config
 Type: `String`
-Default value: `',  '`
+Default value: `Undefined`
 
-A string value that is used to do something with whatever.
+The path to the grunt config to set. When this task is called, grunt-credentials overwrites this grunt config item.
 
-#### options.punctuation
-Type: `String`
-Default value: `'.'`
 
-A string value that is used to do something else with whatever else.
+#### options.expand
+Type: `Boolean`
+Default value: `False`
+
+Expand is used to create an object within the specified config. If you're map is "amazing-username" and your config is "options.stackoverflow" then the grunt config item that will be set is `options.stackoverflow.amazing-username`.
+
+This is useful if you have multiple maps, as grunt-credentials will set all your mapped items to the specified config.
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+#### Single credentials
+In this example, single grunt config items are set to the specified credentials
 
 ```js
-grunt.initConfig({
-  credentials: {
-    options: {},
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
+credentials:{
+  options:{
+    providers:{
+      "grunt-defaults":{
+        credentials:"<%= options.testDefaults %>",
+        map:{
+          "my-cred1":"cred1",
+          "my-cred2":"cred2"
+        }
+      },
+      "grunt-options":{
+        credentials:function(val){
+          grunt.log.writeln(val);
+          return grunt.option(val);
+        },
+        map:{
+          "my-cred1":"cred1",
+          "my-cred2":"cred2"
+        }
+      }
+    }
   },
-});
+  cred1:{
+    options:{
+      config:"options.my-credentials.my-cred1",
+      credential:"my-cred1"
+    }
+  },
+  cred2:{
+    options:{
+      config:"options.my-credentials.my-cred2",
+      credential:"my-cred2"
+    }
+  },
+}
+
+//grunt.config("options.my-credentials") ==
+//{
+//  "my-cred1":"foo",
+//  "my-cred2":"bar"
+//}
 ```
 
-#### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+#### Expanding credentials
+In this example, grunt-config will expand the configuration using the mapping specified
 
 ```js
-grunt.initConfig({
-  credentials: {
-    options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
-    files: {
-      'dest/default_options': ['src/testing', 'src/123'],
-    },
-  },
-});
+credentials:{
+  complexMap:{
+    options:{
+      providers:{
+        "grunt-defaults":{
+          credentials:"<%= options.testDefaults %>",
+          map:{
+            "my-cred1":"cred1",
+            "my-cred2":"cred2"
+          }
+        }
+      },
+      config:"options.my-credentials",
+      expand:true
+    }
+  }
+}
+
+//grunt.config("options.my-credentials") ==
+//{
+//  "my-cred1":"foo",
+//  "my-cred2":"bar"
+//}
 ```
 
 ## Contributing
