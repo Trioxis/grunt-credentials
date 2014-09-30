@@ -7,6 +7,7 @@
  */
 
 'use strict';
+var credentialManager = require("../lib/credentialManager.js")
 
 module.exports = function(grunt) {
 
@@ -16,35 +17,42 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('credentials', 'The best Grunt plugin ever.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      punctuation: '.',
-      separator: ', '
+      expand:false
     });
 
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
+    var manager = new credentialManager();
+    var mapRecord = [];
+
+    Object.keys(options.providers).forEach(function(key){
+      var provider = options.providers[key];
+      provider.name = key;
+
+      //Add provider to grunt
+      grunt.verbose.writeln("Found credential provider : "+provider.name);
+      manager.addProvider(provider.name,provider.credentials,provider.map);
+
+      //Push all possible maps to array
+      Object.keys(provider.map).forEach(function(mapKey){
+        //Add to map record if it isn't already in there
+        if(mapRecord.indexOf(key) === -1){
+          mapRecord.push(mapKey);
+          grunt.verbose.writeln("Found map key : "+mapKey);
         }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
-
-      // Handle options.
-      src += options.punctuation;
-
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
-
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+      });
     });
-  });
 
+    var config = options.config;
+    var credential = options.credential;
+
+
+    if(options.expand){
+      mapRecord.forEach(function(mapKey){
+      grunt.config.set(config+"."+mapKey,manager.getCredential(mapKey));
+      grunt.verbose.writeln("Setting '" + config + "'.'" + mapKey + "'");
+      });
+    }else{
+      grunt.config.set(config,manager.getCredential(credential));
+      grunt.verbose.writeln("Setting '" + config + "' to '" + credential + "'");
+    }
+  });
 };

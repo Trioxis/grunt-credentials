@@ -12,10 +12,17 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
+    options:{
+      testDefaults:{
+        "cred1":"foo",
+        "cred2":"bar"
+      }
+    },
     jshint: {
       all: [
         'Gruntfile.js',
-        'tasks/*.js',
+        'tasks/**/*.js',
+        'lib/**/*.js',
         '<%= nodeunit.tests %>',
       ],
       options: {
@@ -29,23 +36,55 @@ module.exports = function(grunt) {
     },
 
     // Configuration to be run (and then tested).
-    credentials: {
-      default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
+    credentials:{
+      options:{
+        providers:{
+          "in-memory":{
+            credentials:"<%= options.testDefaults %>",
+            map:{
+              "my-cred1":"cred1",
+              "my-cred2":"cred2"
+            }
+          },
+          "grunt-options":{
+            credentials:function(val){
+              grunt.log.writeln(val);
+              return grunt.option(val);
+            },
+            map:{
+              "my-cred1":"cred1",
+              "my-cred2":"cred2"
+            }
+          }
+        }
       },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!',
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
+      cred1:{
+        options:{
+          config:"options.basicTest.my-cred1",
+          credential:"my-cred1"
+        }
       },
+      cred2:{
+        options:{
+          config:"options.basicTest.my-cred2",
+          credential:"my-cred2"
+        }
+      },
+      complexMap:{
+        options:{
+          providers:{
+            "in-memory":{
+              credentials:"<%= options.testDefaults %>",
+              map:{
+                "my-cred1":"cred1",
+                "my-cred2":"cred2"
+              }
+            }
+          },
+          config:"options.complexMappingTest",
+          expand:true
+        }
+      }
     },
 
     // Unit tests.
