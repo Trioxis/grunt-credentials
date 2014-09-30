@@ -38,5 +38,19 @@ exports.credentials = {
     test.deepEqual(actual, expected, 'should set grunt options.credentials to valid credentials');
 
     test.done();
+  },
+  mapExpand: function(test) {
+    test.expect(1);
+
+    console.log(JSON.stringify(grunt.config("options")));
+
+    var actual = grunt.config("options.complexMappingTest");
+    var expected = {
+      "my-cred1":"foo",
+      "my-cred2":"bar"
+    }
+    test.deepEqual(actual, expected, 'should expand mapping below specified credential path');
+
+    test.done();
   }
 };

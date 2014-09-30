@@ -69,6 +69,21 @@ module.exports = function(grunt) {
           config:"options.basicTest.my-cred2",
           credential:"my-cred2"
         }
+      },
+      complexMap:{
+        options:{
+          providers:{
+            "in-memory":{
+              credential:"<%= options.testDefaults %>",
+              map:{
+                "my-cred1":"cred1",
+                "my-cred2":"cred2"
+              }
+            }
+          },
+          config:"options.complexMappingTest",
+          expand:true
+        }
       }
     },
 
