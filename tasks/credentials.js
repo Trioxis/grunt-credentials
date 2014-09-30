@@ -7,6 +7,7 @@
  */
 
 'use strict';
+var credentialManager = require("../lib/credentialManager.js")
 
 module.exports = function(grunt) {
 
@@ -16,35 +17,22 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('credentials', 'The best Grunt plugin ever.', function() {
     // Merge task-specific and/or target-specific options with these defaults.
     var options = this.options({
-      punctuation: '.',
-      separator: ', '
+
     });
 
-    // Iterate over all specified file groups.
-    this.files.forEach(function(f) {
-      // Concat specified files.
-      var src = f.src.filter(function(filepath) {
-        // Warn on and remove invalid source files (if nonull was set).
-        if (!grunt.file.exists(filepath)) {
-          grunt.log.warn('Source file "' + filepath + '" not found.');
-          return false;
-        } else {
-          return true;
-        }
-      }).map(function(filepath) {
-        // Read file source.
-        return grunt.file.read(filepath);
-      }).join(grunt.util.normalizelf(options.separator));
+    var manager = new credentialManager();
 
-      // Handle options.
-      src += options.punctuation;
-
-      // Write the destination file.
-      grunt.file.write(f.dest, src);
-
-      // Print a success message.
-      grunt.log.writeln('File "' + f.dest + '" created.');
+    options.providers.forEach(function(provider){
+      grunt.verbose.writeln("Found credential provider : "+provider.name);
+      manager.addProvider(provider.name,provider.credential,provider.map);
     });
+
+    var config = options.config;
+    var credential = options.credential;
+
+    grunt.verbose.writeln("Setting '" + config + "' to '" + credential + "'");
+
+    grunt.config.set(config,manager.getCredential(options.credential))
   });
 
 };

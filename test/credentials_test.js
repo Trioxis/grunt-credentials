@@ -32,10 +32,10 @@ exports.credentials = {
 
     var actual = grunt.config("options.credentials");
     var expected = {
-      "cred1":"foo",
-      "cred2":"bar"
+      "my-cred1":"foo",
+      "my-cred2":"bar"
     }
-    test.equal(actual, expected, 'should set grunt options.credentials to valid credentials');
+    test.deepEqual(actual, expected, 'should set grunt options.credentials to valid credentials');
 
     test.done();
   }

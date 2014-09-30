@@ -41,7 +41,7 @@ module.exports = function(grunt) {
         providers:[
           {
             name:"aws-credentials",
-            eval:grunt.config('options.testDefaults'),
+            credential:"<%= options.testDefaults %>",
             map:{
               "my-cred1":"cred1",
               "my-cred2":"cred2"
@@ -49,20 +49,27 @@ module.exports = function(grunt) {
           },
           {
             name:"inline",
-            eval:function(val){
+            credential:function(val){
               grunt.log.writeln(val);
               return grunt.option(val);
             },
             map:{
-              "aws-api-key":"awskey",
-              "aws-api-secret":"awssecret"
+              "my-cred1":"cred1",
+              "my-cred2":"cred2"
             }
           }
         ]
       },
-      init:{
+      cred1:{
         options:{
-          config:"options.credentials"
+          config:"options.credentials.my-cred1",
+          credential:"my-cred1"
+        }
+      },
+      cred2:{
+        options:{
+          config:"options.credentials.my-cred2",
+          credential:"my-cred2"
         }
       }
     },
