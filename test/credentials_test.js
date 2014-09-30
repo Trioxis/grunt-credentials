@@ -42,8 +42,6 @@ exports.credentials = {
   mapExpand: function(test) {
     test.expect(1);
 
-    console.log(JSON.stringify(grunt.config("options")));
-
     var actual = grunt.config("options.complexMappingTest");
     var expected = {
       "my-cred1":"foo",

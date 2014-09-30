@@ -44,14 +44,15 @@ module.exports = function(grunt) {
     var config = options.config;
     var credential = options.credential;
 
-    grunt.verbose.writeln("Setting '" + config + "' to '" + credential + "'");
 
     if(options.expand){
       mapRecord.forEach(function(mapKey){
-        grunt.config.set(config+"."+mapKey,manager.getCredential(mapKey));
+      grunt.config.set(config+"."+mapKey,manager.getCredential(mapKey));
+      grunt.verbose.writeln("Setting '" + config + "'.'" + mapKey + "'");
       });
     }else{
       grunt.config.set(config,manager.getCredential(credential));
+      grunt.verbose.writeln("Setting '" + config + "' to '" + credential + "'");
     }
   });
 };
