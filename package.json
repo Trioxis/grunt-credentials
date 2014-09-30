@@ -1,0 +1,36 @@
+{
+  "name": "grunt-credentials",
+  "description": "The best Grunt plugin ever.",
+  "version": "0.1.0",
+  "homepage": "",
+  "author": {
+    "name": "Trioxis",
+    "email": "it-team@trioxis.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://bitbucket.org/frontline/grunt-credentials"
+  },
+  "bugs": {
+    "url": ""
+  },
+  "licenses": "None",
+  "engines": {
+    "node": ">= 0.8.0"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "devDependencies": {
+    "grunt-contrib-jshint": "~0.6.0",
+    "grunt-contrib-clean": "~0.4.0",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt": "~0.4.2"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.2"
+  },
+  "keywords": [
+    "gruntplugin"
+  ]
+}
