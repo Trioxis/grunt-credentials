@@ -62,13 +62,13 @@ module.exports = function(grunt) {
       },
       cred1:{
         options:{
-          config:"options.credentials.my-cred1",
+          config:"options.basicTest.my-cred1",
           credential:"my-cred1"
         }
       },
       cred2:{
         options:{
-          config:"options.credentials.my-cred2",
+          config:"options.basicTest.my-cred2",
           credential:"my-cred2"
         }
       }

@@ -27,10 +27,10 @@ exports.credentials = {
     // setup here if necessary
     done();
   },
-  default_options: function(test) {
+  basicTask: function(test) {
     test.expect(1);
 
-    var actual = grunt.config("options.credentials");
+    var actual = grunt.config("options.basicTest");
     var expected = {
       "my-cred1":"foo",
       "my-cred2":"bar"
