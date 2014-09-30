@@ -29,7 +29,7 @@ module.exports = function(grunt) {
 
       //Add provider to grunt
       grunt.verbose.writeln("Found credential provider : "+provider.name);
-      manager.addProvider(provider.name,provider.credential,provider.map);
+      manager.addProvider(provider.name,provider.credentials,provider.map);
 
       //Push all possible maps to array
       Object.keys(provider.map).forEach(function(mapKey){

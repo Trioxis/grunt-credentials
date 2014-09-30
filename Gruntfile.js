@@ -40,14 +40,14 @@ module.exports = function(grunt) {
       options:{
         providers:{
           "in-memory":{
-            credential:"<%= options.testDefaults %>",
+            credentials:"<%= options.testDefaults %>",
             map:{
               "my-cred1":"cred1",
               "my-cred2":"cred2"
             }
           },
           "grunt-options":{
-            credential:function(val){
+            credentials:function(val){
               grunt.log.writeln(val);
               return grunt.option(val);
             },
@@ -74,7 +74,7 @@ module.exports = function(grunt) {
         options:{
           providers:{
             "in-memory":{
-              credential:"<%= options.testDefaults %>",
+              credentials:"<%= options.testDefaults %>",
               map:{
                 "my-cred1":"cred1",
                 "my-cred2":"cred2"
