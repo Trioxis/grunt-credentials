@@ -38,17 +38,15 @@ module.exports = function(grunt) {
     // Configuration to be run (and then tested).
     credentials:{
       options:{
-        providers:[
-          {
-            name:"aws-credentials",
+        providers:{
+          "in-memory":{
             credential:"<%= options.testDefaults %>",
             map:{
               "my-cred1":"cred1",
               "my-cred2":"cred2"
             }
           },
-          {
-            name:"inline",
+          "grunt-options":{
             credential:function(val){
               grunt.log.writeln(val);
               return grunt.option(val);
@@ -58,7 +56,7 @@ module.exports = function(grunt) {
               "my-cred2":"cred2"
             }
           }
-        ]
+        }
       },
       cred1:{
         options:{

@@ -22,7 +22,10 @@ module.exports = function(grunt) {
 
     var manager = new credentialManager();
 
-    options.providers.forEach(function(provider){
+    Object.keys(options.providers).forEach(function(key){
+      var provider = options.providers[key];
+      provider.name = key;
+      
       grunt.verbose.writeln("Found credential provider : "+provider.name);
       manager.addProvider(provider.name,provider.credential,provider.map);
     });
