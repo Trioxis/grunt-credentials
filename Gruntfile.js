@@ -12,10 +12,17 @@ module.exports = function(grunt) {
 
   // Project configuration.
   grunt.initConfig({
+    options:{
+      testDefaults:{
+        "cred1":"foo",
+        "cred2":"bar"
+      }
+    },
     jshint: {
       all: [
         'Gruntfile.js',
-        'tasks/*.js',
+        'tasks/**/*.js',
+        'lib/**/*.js',
         '<%= nodeunit.tests %>',
       ],
       options: {
@@ -29,23 +36,35 @@ module.exports = function(grunt) {
     },
 
     // Configuration to be run (and then tested).
-    credentials: {
-      default_options: {
-        options: {
-        },
-        files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
+    credentials:{
+      options:{
+        providers:[
+          {
+            name:"aws-credentials",
+            eval:grunt.config('options.testDefaults'),
+            map:{
+              "my-cred1":"cred1",
+              "my-cred2":"cred2"
+            }
+          },
+          {
+            name:"inline",
+            eval:function(val){
+              grunt.log.writeln(val);
+              return grunt.option(val);
+            },
+            map:{
+              "aws-api-key":"awskey",
+              "aws-api-secret":"awssecret"
+            }
+          }
+        ]
       },
-      custom_options: {
-        options: {
-          separator: ': ',
-          punctuation: ' !!!',
-        },
-        files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123'],
-        },
-      },
+      init:{
+        options:{
+          config:"options.credentials"
+        }
+      }
     },
 
     // Unit tests.
