@@ -84,6 +84,18 @@ module.exports = function(grunt) {
           config:"options.complexMappingTest",
           expand:true
         }
+      },
+      undefinedCredentialsTest:{
+        options:{
+          providers:{
+            "in-memory":{
+              credentials:undefined,
+              map:{}
+            }
+          },
+          config:"options.undefinedCredentialsTest",
+          expand:true
+        }
       }
     },
 
