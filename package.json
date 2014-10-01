@@ -1,7 +1,7 @@
 {
   "name": "grunt-credentials",
   "description": "Amazing grunt plugin for managing credentials",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "homepage": "",
   "author": {
     "name": "Trioxis",
@@ -12,7 +12,7 @@
     "url": "https://github.com/Trioxis/grunt-credentials.git"
   },
   "bugs": {
-    "url": ""
+    "url": "https://github.com/Trioxis/grunt-credentials/issues"
   },
   "licenses": "MIT",
   "engines": {

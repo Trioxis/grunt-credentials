@@ -28,7 +28,8 @@ exports.credentials = {
     done();
   },
   basicTask: function(test) {
-    test.expect(1);
+    test.expect(2);
+    test.ok(true,"should not fail if task has no credentials")
 
     var actual = grunt.config("options.basicTest");
     var expected = {

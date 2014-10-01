@@ -27,9 +27,15 @@ module.exports = function(grunt) {
       var provider = options.providers[key];
       provider.name = key;
 
-      //Add provider to grunt
       grunt.verbose.writeln("Found credential provider : "+provider.name);
-      manager.addProvider(provider.name,provider.credentials,provider.map);
+
+      //Check provider has credentials object
+      if(provider.credentials){
+        //Add provider to grunt
+        manager.addProvider(provider.name,provider.credentials,provider.map);
+      }else{
+        grunt.log.error("Provider '"+provider.name+"' did not have any credentials");
+      }
 
       //Push all possible maps to array
       Object.keys(provider.map).forEach(function(mapKey){
@@ -54,5 +60,7 @@ module.exports = function(grunt) {
       grunt.config.set(config,manager.getCredential(credential));
       grunt.verbose.writeln("Setting '" + config + "' to '" + credential + "'");
     }
+
+    grunt.log.oklns("Set credentials to '"+config+"'");
   });
 };
